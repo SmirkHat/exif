@@ -83,8 +83,8 @@ export default function Home() {
         // We use the original file type if possible, or fallback to jpeg
         const outType = selectedFile.type === "image/png" ? "image/png" : 
                        selectedFile.type === "image/webp" ? "image/webp" : "image/jpeg";
-        // Max quality for jpeg/webp
-        canvas.toBlob((blob) => resolve(blob), outType, 1.0);
+        // Use 0.85 quality for jpeg/webp to prevent file size bloat while maintaining visual quality
+        canvas.toBlob((blob) => resolve(blob), outType, 0.85);
       });
 
       if (!cleanedBlob) {
@@ -162,7 +162,7 @@ export default function Home() {
           
           {!file && !isProcessing && (
             <div
-              className={`relative flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-2xl transition-all duration-200 ease-out ${
+              className={`relative flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-2xl transition-all duration-200 ease-out cursor-pointer ${
                 isDragging 
                   ? "border-amber-500 bg-amber-500/10 scale-[1.02]" 
                   : "border-neutral-700 bg-neutral-900 hover:border-neutral-500 hover:bg-neutral-800/80"
@@ -231,14 +231,14 @@ export default function Home() {
                 <a 
                   href={cleanedUrl} 
                   download={downloadName}
-                  className="flex-1 flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 text-white py-4 px-6 rounded-2xl font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-500/25"
+                  className="flex-1 flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 text-white py-4 px-6 rounded-2xl font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-500/25 cursor-pointer"
                 >
                   <Download className="w-5 h-5" />
                   Stáhnout čistý obrázek
                 </a>
                 <button 
                   onClick={reset}
-                  className="px-6 py-4 flex-none font-medium bg-neutral-800 hover:bg-neutral-700 text-white rounded-2xl transition-all border border-neutral-700 active:scale-[0.98]"
+                  className="px-6 py-4 flex-none font-medium bg-neutral-800 hover:bg-neutral-700 text-white rounded-2xl transition-all border border-neutral-700 active:scale-[0.98] cursor-pointer"
                 >
                   Zpracovat další
                 </button>
