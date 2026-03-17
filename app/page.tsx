@@ -28,7 +28,7 @@ export default function Home() {
                    selectedFile.type === 'image/heif';
 
     if (!selectedFile.type.startsWith("image/") && !isHeic) {
-      setError("Please select a valid image file. Supported formats: JPEG, PNG, WebP, HEIC.");
+      setError("Vyberte prosím platný soubor obrázku. Podporované formáty: JPEG, PNG, WebP, HEIC.");
       return;
     }
 
@@ -59,7 +59,7 @@ export default function Home() {
       
       const imgLoadPromise = new Promise((resolve, reject) => {
         img.onload = () => resolve(img);
-        img.onerror = () => reject(new Error("Failed to load image"));
+        img.onerror = () => reject(new Error("Nepodařilo se načíst obrázek"));
       });
 
       img.src = originalUrl;
@@ -72,7 +72,7 @@ export default function Home() {
       const ctx = canvas.getContext("2d");
 
       if (!ctx) {
-        throw new Error("Could not get canvas context");
+        throw new Error("Nepodařilo se získat kontext plátna");
       }
 
       ctx.drawImage(img, 0, 0);
@@ -88,14 +88,14 @@ export default function Home() {
       });
 
       if (!cleanedBlob) {
-        throw new Error("Failed to process image");
+        throw new Error("Nepodařilo se zpracovat obrázek");
       }
 
       const newUrl = URL.createObjectURL(cleanedBlob);
       setCleanedUrl(newUrl);
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An unknown error occurred");
+      setError(err instanceof Error ? err.message : "Došlo k neznámé chybě");
     } finally {
       setIsProcessing(false);
     }
@@ -135,26 +135,26 @@ export default function Home() {
     }
   };
 
-  const downloadName = file ? file.name.replace(/\.[^/.]+$/, "") + "_cleaned" + file.name.match(/\.[^/.]+$/)?.[0] : "cleaned_image.jpg";
+  const downloadName = file ? file.name.replace(/\.[^/.]+$/, "") + "_cisty" + file.name.match(/\.[^/.]+$/)?.[0] : "cisty_obrazek.jpg";
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100 selection:bg-blue-500/30 font-sans flex flex-col items-center justify-center p-6 sm:p-12 relative overflow-hidden">
+    <div className="min-h-screen bg-neutral-950 text-neutral-100 selection:bg-amber-500/30 font-sans flex flex-col items-center justify-center p-6 sm:p-12 relative overflow-hidden">
       
       {/* Background glowing effects */}
-      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/20 blur-[120px] pointer-events-none" />
+      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-amber-600/20 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-amber-500/20 blur-[120px] pointer-events-none" />
 
       <main className="w-full max-w-2xl relative z-10 flex flex-col items-center text-center">
         
         <div className="mb-10 space-y-4">
-          <div className="inline-flex items-center justify-center p-3 bg-blue-500/10 rounded-2xl mb-2 border border-blue-500/20 text-blue-400">
+          <div className="inline-flex items-center justify-center p-3 bg-amber-500/10 rounded-2xl mb-2 border border-amber-500/20 text-amber-400">
             <ImageIcon className="w-8 h-8" />
           </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-br from-white to-neutral-500 bg-clip-text text-transparent">
-            EXIF Stripper
+            EXIF Odstraňovač
           </h1>
           <p className="text-neutral-400 text-lg max-w-lg mx-auto">
-            Securely remove all hidden metadata, location data, and camera details from your photos directly in your browser.
+            Bezpečně odstraňte všechna skrytá metadata a údaje o poloze ze svých fotografií přímo ve vašem prohlížeči.
           </p>
         </div>
 
@@ -164,7 +164,7 @@ export default function Home() {
             <div
               className={`relative flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-2xl transition-all duration-200 ease-out ${
                 isDragging 
-                  ? "border-blue-500 bg-blue-500/10 scale-[1.02]" 
+                  ? "border-amber-500 bg-amber-500/10 scale-[1.02]" 
                   : "border-neutral-700 bg-neutral-900 hover:border-neutral-500 hover:bg-neutral-800/80"
               }`}
               onDragOver={handleDragOver}
@@ -179,20 +179,20 @@ export default function Home() {
                 className="hidden" 
                 accept="image/*,.heic,.heif"
               />
-              <UploadCloud className={`w-12 h-12 mb-4 transition-colors ${isDragging ? 'text-blue-400' : 'text-neutral-500'}`} />
+              <UploadCloud className={`w-12 h-12 mb-4 transition-colors ${isDragging ? 'text-amber-400' : 'text-neutral-500'}`} />
               <p className="text-lg font-medium text-neutral-200 mb-1">
-                Drag & drop your photo here
+                Přetáhněte sem svou fotografii
               </p>
               <p className="text-sm text-neutral-500">
-                or click to browse from your device
+                nebo klikněte pro výběr ze zařízení
               </p>
             </div>
           )}
 
           {isProcessing && (
             <div className="flex flex-col items-center justify-center py-20 space-y-6">
-              <RefreshCw className="w-10 h-10 text-blue-500 animate-spin" />
-              <p className="text-lg font-medium animate-pulse text-blue-200">Scrubbing metadata...</p>
+              <RefreshCw className="w-10 h-10 text-amber-500 animate-spin" />
+              <p className="text-lg font-medium animate-pulse text-amber-200">Odstraňování metadat...</p>
             </div>
           )}
 
@@ -204,7 +204,7 @@ export default function Home() {
                 onClick={reset}
                 className="mt-4 px-6 py-2 bg-neutral-800 hover:bg-neutral-700 rounded-full transition-colors text-white font-medium text-sm border border-neutral-700"
               >
-                Try Again
+                Zkusit znovu
               </button>
             </div>
           )}
@@ -213,7 +213,7 @@ export default function Home() {
             <div className="flex flex-col items-center w-full animate-in fade-in zoom-in-95 duration-500">
               <div className="flex items-center gap-2 mb-6 text-emerald-400 bg-emerald-500/10 px-4 py-2 rounded-full border border-emerald-500/20">
                 <CheckCircle className="w-5 h-5" />
-                <span className="font-medium">Metadata successfully removed</span>
+                <span className="font-medium">Metadata byla úspěšně odstraněna</span>
               </div>
               
               <div className="flex gap-6 w-full mb-8 overflow-hidden rounded-2xl border border-neutral-800 bg-black/50 p-2 relative group">
@@ -231,16 +231,16 @@ export default function Home() {
                 <a 
                   href={cleanedUrl} 
                   download={downloadName}
-                  className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-500 text-white py-4 px-6 rounded-2xl font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-blue-500/25"
+                  className="flex-1 flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-500 text-white py-4 px-6 rounded-2xl font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-amber-500/25"
                 >
                   <Download className="w-5 h-5" />
-                  Download Clean Image
+                  Stáhnout čistý obrázek
                 </a>
                 <button 
                   onClick={reset}
                   className="px-6 py-4 flex-none font-medium bg-neutral-800 hover:bg-neutral-700 text-white rounded-2xl transition-all border border-neutral-700 active:scale-[0.98]"
                 >
-                  Process Another
+                  Zpracovat další
                 </button>
               </div>
             </div>
@@ -249,7 +249,7 @@ export default function Home() {
         </div>
         
         <div className="mt-12 text-sm text-neutral-500 font-medium">
-          <p>100% Client-Side • No photos are ever uploaded to any server</p>
+          <p>100% lokálně v prohlížeči • Žádné fotografie nejsou nikdy nahrávány na server</p>
         </div>
       </main>
     </div>
